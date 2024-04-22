@@ -1,28 +1,37 @@
+import { UserRole } from '@prisma/client';
 import { Field, InputType } from '@nestjs/graphql';
-import { IsNumber, IsOptional } from 'class-validator';
-import { UserCursor, UserWhereInput, UserOrderByInput } from '../prisma';
+import {
+	IsDate,
+	IsNumber,
+	IsEmail,
+	IsString,
+	IsOptional,
+} from 'class-validator';
 
 @InputType()
-export class FindAllUsersInput {
+export class UserInput {
 	@IsNumber()
 	@IsOptional()
 	@Field({ nullable: true })
-	skip?: number;
+	id?: number;
 
-	@IsNumber()
+	@IsEmail()
 	@IsOptional()
 	@Field({ nullable: true })
-	take?: number;
+	email?: string;
 
+	@IsString()
 	@IsOptional()
 	@Field({ nullable: true })
-	cursor?: UserCursor;
+	role?: UserRole;
 
+	@IsDate()
 	@IsOptional()
 	@Field({ nullable: true })
-	where?: UserWhereInput;
+	createdAt?: Date;
 
+	@IsDate()
 	@IsOptional()
 	@Field({ nullable: true })
-	orderBy?: UserOrderByInput;
+	updatedAt?: Date;
 }

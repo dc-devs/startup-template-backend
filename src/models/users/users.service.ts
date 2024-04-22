@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './entities';
-import { FindOneUserInput } from './dto/inputs';
 import { PrismaService } from '../../services/prisma.service';
+import { encodePassword } from '../../models/users/common/utils/encode-password';
+import {
+	UpdateUserInput,
+	FindOneUserInput,
+	FindAllUsersInput,
+	CreateUserEmailInput,
+} from './dto/inputs';
 
 const select = {
 	id: true,
@@ -10,10 +16,6 @@ const select = {
 	createdAt: true,
 	updatedAt: true,
 };
-
-// LEFT OFF:
-// GraphQl playground nont rerturning one user..
-// Lets implemet findAll to esure running as expected..
 
 @Injectable()
 export class UsersService {
@@ -28,18 +30,48 @@ export class UsersService {
 		});
 	}
 
-	// async findAll() {
-	// 	return [{ id: 1, name: 'David' }];
-	// }
+	async findAll(findAllUsersInput: FindAllUsersInput): Promise<User[]> {
+		const { skip, cursor, take, orderBy, where } = findAllUsersInput;
+		return this.prisma.user.findMany({
+			skip,
+			take,
+			cursor,
+			where,
+			orderBy,
+			select,
+		});
+	}
 
-	// create(createUserInput: CreateUserInput) {
-	// 	return 'This action adds a new user';
-	// }
+	create(createUserEmailInput: CreateUserEmailInput): Promise<User> {
+		const { email, password } = createUserEmailInput;
+		const encodedPassword = encodePassword(password);
+		const emailLowerCase = email.toLowerCase();
 
-	// update(id: number, updateUserInput: UpdateUserInput) {
-	// 	return `This action updates a #${id} user`;
-	// }
-	// remove(id: number) {
-	// 	return `This action removes a #${id} user`;
-	// }
+		return this.prisma.user.create({
+			data: {
+				email: emailLowerCase,
+				password: encodedPassword,
+			},
+			select,
+		});
+	}
+
+	update(id: number, data: UpdateUserInput): Promise<User> {
+		return this.prisma.user.update({
+			where: {
+				id,
+			},
+			data,
+			select,
+		});
+	}
+
+	delete(id: number): Promise<User> {
+		return this.prisma.user.delete({
+			where: {
+				id,
+			},
+			select,
+		});
+	}
 }
