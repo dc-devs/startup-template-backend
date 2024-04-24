@@ -9,6 +9,7 @@ import { PrismaService } from '../../services/prisma.service';
 // import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
 import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
 import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
+import { CreateOneUserArgs } from '../@generated/user/create-one-user.args';
 
 const select = {
 	id: true,
@@ -37,20 +38,21 @@ export class UsersService {
 		return this.prisma.user.findMany(findManyUserArgs);
 	}
 
-	// create(userCreateInput: UserCreateInput): Promise<User> {
-	// 	// const { email, password } = data;
-	// 	// const encodedPassword = encodePassword(password);
-	// 	// const emailLowerCase = email.toLowerCase();
+	create(createOneUserArgs: CreateOneUserArgs): Promise<UserSafe> {
+		// const { email, password } = data;
+		// const encodedPassword = encodePassword(password);
+		// const emailLowerCase = email.toLowerCase();
+		const { data } = createOneUserArgs;
 
-	// 	return this.prisma.user.create({
-	// 		// data: {
-	// 		// 	email: emailLowerCase,
-	// 		// 	password: encodedPassword,
-	// 		// },
-	// 		data: userCreateInput,
-	// 		select,
-	// 	});
-	// }
+		return this.prisma.user.create({
+			// data: {
+			// 	email: emailLowerCase,
+			// 	password: encodedPassword,
+			// },
+			data,
+			select,
+		});
+	}
 
 	// update(where: UserWhereUniqueInput): Promise<User> {
 

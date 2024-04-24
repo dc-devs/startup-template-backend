@@ -1,14 +1,10 @@
-import { User } from '../@generated/user/user.model';
 import { UsersService } from './users.service';
+import { User } from '../@generated/user/user.model';
 import { UserSafe } from './common/entities/user-safe';
-// import { UserInputError } from 'apollo-server-express';
-import { Resolver, Query, /*Mutation,*/ Args } from '@nestjs/graphql';
-// import { UserCreatleInput } from '../@generated/user/user-create.input';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
 import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
-// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
-// import { UpdateOneUserArgs } from '../@generated/user/update-one-user.args';
-// import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
+import { CreateOneUserArgs } from '../@generated/user/create-one-user.args';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -27,23 +23,25 @@ export class UsersResolver {
 		return this.usersService.findAll(args);
 	}
 
-	// @Mutation(() => User)
-	// async createUser(
-	// 	@Args('createOneUserArgs')
-	// 	userCreateInput: UserCreateInput,
-	// ) {
-	// 	try {
-	// 		const newUser = await this.usersService.create(userCreateInput);
-	// 		// const loggedInUser = await this.authService.login({
-	// 		// 	...request,
-	// 		// 	user: { ...newUser },
-	// 		// });
+	@Mutation(() => User)
+	async createUser(
+		@Args()
+		createOneUserArgs: CreateOneUserArgs,
+	): Promise<UserSafe> {
+		try {
+			const newUser = await this.usersService.create(createOneUserArgs);
+			// const loggedInUser = await this.authService.login({
+			// 	...request,
+			// 	user: { ...newUser },
+			// });
 
-	// 		return { isAuthenticated: true, user: newUser };
-	// 	} catch (error) {
-	// 		// generateGraphQLError(error);
-	// 	}
-	// }
+			// return { isAuthenticated: true, user: newUser };
+
+			return newUser;
+		} catch (error) {
+			// generateGraphQLError(error);
+		}
+	}
 
 	// @Mutation(() => User)
 	// async updateUser(

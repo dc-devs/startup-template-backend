@@ -36,6 +36,10 @@ input IntFilter {
   notIn: [Int!]
 }
 
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+}
+
 input NestedDateTimeFilter {
   equals: DateTime
   gt: DateTime
@@ -117,6 +121,14 @@ type User {
   id: ID!
   role: UserRole!
   updatedAt: DateTime!
+}
+
+input UserCreateInput {
+  createdAt: DateTime
+  email: String!
+  password: String!
+  role: UserRole
+  updatedAt: DateTime
 }
 
 input UserOrderByWithRelationInput {
