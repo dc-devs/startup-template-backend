@@ -1,12 +1,14 @@
-import { User } from './entities/user.entity';
+import { User } from '../@generated/user/user.model';
 import { UsersService } from './users.service';
+import { UserSafe } from './common/entities/user-safe';
 // import { UserInputError } from 'apollo-server-express';
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import {
-	UpdateUserInput,
-	FindOneUserInput,
-	FindAllUsersInput,
-} from './dto/inputs';
+import { Resolver, Query, /*Mutation,*/ Args } from '@nestjs/graphql';
+// import { UserCreatleInput } from '../@generated/user/user-create.input';
+import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
+import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
+// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
+// import { UpdateOneUserArgs } from '../@generated/user/update-one-user.args';
+// import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -14,34 +16,51 @@ export class UsersResolver {
 
 	@Query(() => User, { nullable: true })
 	findOneUser(
-		@Args('findOneUserInput') findOneUserInput: FindOneUserInput,
-	): Promise<User | null> {
-		return this.usersService.findOne(findOneUserInput);
+		@Args()
+		findUniqueUserArgs: FindUniqueUserArgs,
+	): Promise<UserSafe | null> {
+		return this.usersService.findOne(findUniqueUserArgs);
 	}
 
 	@Query(() => [User])
-	findAllUsers(
-		@Args('findAllUsersInput') findAllUsersInput: FindAllUsersInput,
-	): Promise<User[]> {
-		return this.usersService.findAll(findAllUsersInput);
+	findAllUsers(@Args() args: FindManyUserArgs): Promise<UserSafe[]> {
+		return this.usersService.findAll(args);
 	}
 
-	@Mutation(() => User)
-	async updateUser(
-		@Args('id', { type: () => Int }) id: number,
-		@Args('updateUserInput') updateUserInput: UpdateUserInput,
-	): Promise<User> {
-		console.log(id, updateUserInput);
-		try {
-			return await this.usersService.update(id, updateUserInput);
-		} catch (error) {
-			console.log(error);
-			// generateGraphQLError(error);
-		}
-	}
+	// @Mutation(() => User)
+	// async createUser(
+	// 	@Args('createOneUserArgs')
+	// 	userCreateInput: UserCreateInput,
+	// ) {
+	// 	try {
+	// 		const newUser = await this.usersService.create(userCreateInput);
+	// 		// const loggedInUser = await this.authService.login({
+	// 		// 	...request,
+	// 		// 	user: { ...newUser },
+	// 		// });
 
-	@Mutation(() => User)
-	deleteUser(@Args('id', { type: () => Int }) id: number): Promise<User> {
-		return this.usersService.delete(id);
-	}
+	// 		return { isAuthenticated: true, user: newUser };
+	// 	} catch (error) {
+	// 		// generateGraphQLError(error);
+	// 	}
+	// }
+
+	// @Mutation(() => User)
+	// async updateUser(
+	// 	@Args('updateOneUserArgs') updateOneUserArgs: UpdateOneUserArgs,
+	// ): Promise<User> {
+	// 	try {
+	// 		return await this.usersService.update(updateOneUserArgs);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 		// generateGraphQLError(error);
+	// 	}
+	// }
+
+	// @Mutation(() => User)
+	// deleteUser(
+	// 	@Args('deleteOneUserArgs') deleteOneUserArgs: DeleteOneUserArgs,
+	// ): Promise<User> {
+	// 	return this.usersService.delete(deleteOneUserArgs);
+	// }
 }

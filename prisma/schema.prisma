@@ -8,6 +8,13 @@ generator client {
 	provider = "prisma-client-js"
 }
 
+generator nestgraphql {
+	provider = "node node_modules/prisma-nestjs-graphql"
+	output = "../src/models/@generated"
+	fields_Validator_from = "class-validator"
+	fields_Validator_input = true
+}
+
 datasource db {
 	provider = "postgresql"
 	url = env("DATABASE_URL")
@@ -21,7 +28,13 @@ enum UserRole {
 
 model User {
 	id						Int				@default(autoincrement()) @id
-	email					String?			@unique
+	/// @Validator.IsEmail
+	email					String			@unique
+	/// @Field({ nullable: true })
+	/// @HideField()
+	/// @Validator.IsString
+	/// @Validator.MinLength(8)
+	/// @TypeGraphQL.omit(output: true)
 	password				String
 	role					UserRole		@default(USER)
 	createdAt				DateTime		@default(now())

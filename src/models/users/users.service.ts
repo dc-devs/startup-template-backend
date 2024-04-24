@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entities';
+import { UserSafe } from './common/entities/user-safe';
 import { PrismaService } from '../../services/prisma.service';
-import { encodePassword } from '../../models/users/common/utils/encode-password';
-import {
-	UpdateUserInput,
-	FindOneUserInput,
-	FindAllUsersInput,
-	CreateUserEmailInput,
-} from './dto/inputs';
+// import { UserCreateInput } from '../@generated/user/user-create.input';
+// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
+// import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
+// import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
+// import { encodePassword } from '../../models/users/common/utils/encode-password';
+// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
+import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
+import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
 
 const select = {
 	id: true,
@@ -21,57 +22,51 @@ const select = {
 export class UsersService {
 	constructor(private prisma: PrismaService) {}
 
-	async findOne(findOneUserInput: FindOneUserInput): Promise<User | null> {
-		const { id, email } = findOneUserInput;
+	async findOne(
+		findUniqueUserArgs: FindUniqueUserArgs,
+	): Promise<UserSafe | null> {
+		const { where } = findUniqueUserArgs;
 
 		return this.prisma.user.findUnique({
-			where: { id, email },
-			select,
-		});
-	}
-
-	async findAll(findAllUsersInput: FindAllUsersInput): Promise<User[]> {
-		const { skip, cursor, take, orderBy, where } = findAllUsersInput;
-		return this.prisma.user.findMany({
-			skip,
-			take,
-			cursor,
 			where,
-			orderBy,
 			select,
 		});
 	}
 
-	create(createUserEmailInput: CreateUserEmailInput): Promise<User> {
-		const { email, password } = createUserEmailInput;
-		const encodedPassword = encodePassword(password);
-		const emailLowerCase = email.toLowerCase();
-
-		return this.prisma.user.create({
-			data: {
-				email: emailLowerCase,
-				password: encodedPassword,
-			},
-			select,
-		});
+	async findAll(findManyUserArgs: FindManyUserArgs): Promise<UserSafe[]> {
+		return this.prisma.user.findMany(findManyUserArgs);
 	}
 
-	update(id: number, data: UpdateUserInput): Promise<User> {
-		return this.prisma.user.update({
-			where: {
-				id,
-			},
-			data,
-			select,
-		});
-	}
+	// create(userCreateInput: UserCreateInput): Promise<User> {
+	// 	// const { email, password } = data;
+	// 	// const encodedPassword = encodePassword(password);
+	// 	// const emailLowerCase = email.toLowerCase();
 
-	delete(id: number): Promise<User> {
-		return this.prisma.user.delete({
-			where: {
-				id,
-			},
-			select,
-		});
-	}
+	// 	return this.prisma.user.create({
+	// 		// data: {
+	// 		// 	email: emailLowerCase,
+	// 		// 	password: encodedPassword,
+	// 		// },
+	// 		data: userCreateInput,
+	// 		select,
+	// 	});
+	// }
+
+	// update(where: UserWhereUniqueInput): Promise<User> {
+
+	// 	return this.prisma.user.update({
+	// 		where,
+	// 		data,
+	// 		select,
+	// 	});
+	// }
+
+	// delete(deleteOneUserArgs: DeleteOneUserArgs): Promise<User> {
+	// 	const { where } = deleteOneUserArgs;
+
+	// 	return this.prisma.user.delete({
+	// 		where,
+	// 		select,
+	// 	});
+	// }
 }
