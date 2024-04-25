@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UserSafe } from './common/entities/user-safe';
 import { PrismaService } from '../../services/prisma.service';
-// import { UserCreateInput } from '../@generated/user/user-create.input';
-// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
-// import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
-// import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
 // import { encodePassword } from '../../models/users/common/utils/encode-password';
-// import { UserWhereUniqueInput } from '../@generated/user/user-where-unique.input';
 import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
 import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
 import { CreateOneUserArgs } from '../@generated/user/create-one-user.args';
+import { UpdateOneUserArgs } from '../@generated/user/update-one-user.args';
+import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
 
 const select = {
 	id: true,
@@ -54,21 +51,22 @@ export class UsersService {
 		});
 	}
 
-	// update(where: UserWhereUniqueInput): Promise<User> {
+	update(updateOneUserArgs: UpdateOneUserArgs): Promise<UserSafe> {
+		const { where, data } = updateOneUserArgs;
 
-	// 	return this.prisma.user.update({
-	// 		where,
-	// 		data,
-	// 		select,
-	// 	});
-	// }
+		return this.prisma.user.update({
+			where,
+			data,
+			select,
+		});
+	}
 
-	// delete(deleteOneUserArgs: DeleteOneUserArgs): Promise<User> {
-	// 	const { where } = deleteOneUserArgs;
+	delete(deleteOneUserArgs: DeleteOneUserArgs): Promise<UserSafe> {
+		const { where } = deleteOneUserArgs;
 
-	// 	return this.prisma.user.delete({
-	// 		where,
-	// 		select,
-	// 	});
-	// }
+		return this.prisma.user.delete({
+			where,
+			select,
+		});
+	}
 }

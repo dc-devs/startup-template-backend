@@ -5,6 +5,8 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FindManyUserArgs } from '../@generated/user/find-many-user.args';
 import { FindUniqueUserArgs } from '../@generated/user/find-unique-user.args';
 import { CreateOneUserArgs } from '../@generated/user/create-one-user.args';
+import { UpdateOneUserArgs } from '../@generated/user/update-one-user.args';
+import { DeleteOneUserArgs } from '../@generated/user/delete-one-user.args';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -43,22 +45,22 @@ export class UsersResolver {
 		}
 	}
 
-	// @Mutation(() => User)
-	// async updateUser(
-	// 	@Args('updateOneUserArgs') updateOneUserArgs: UpdateOneUserArgs,
-	// ): Promise<User> {
-	// 	try {
-	// 		return await this.usersService.update(updateOneUserArgs);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 		// generateGraphQLError(error);
-	// 	}
-	// }
+	@Mutation(() => User)
+	async updateUser(
+		@Args() updateOneUserArgs: UpdateOneUserArgs,
+	): Promise<UserSafe> {
+		try {
+			return await this.usersService.update(updateOneUserArgs);
+		} catch (error) {
+			console.log(error);
+			// generateGraphQLError(error);
+		}
+	}
 
-	// @Mutation(() => User)
-	// deleteUser(
-	// 	@Args('deleteOneUserArgs') deleteOneUserArgs: DeleteOneUserArgs,
-	// ): Promise<User> {
-	// 	return this.usersService.delete(deleteOneUserArgs);
-	// }
+	@Mutation(() => User)
+	deleteUser(
+		@Args() deleteOneUserArgs: DeleteOneUserArgs,
+	): Promise<UserSafe> {
+		return this.usersService.delete(deleteOneUserArgs);
+	}
 }
