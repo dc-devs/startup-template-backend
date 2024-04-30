@@ -1,3 +1,3 @@
-import { User } from '../../../@generated/user/user.model';
+import { User } from '../../../common/@generated/user/user.model';
 
 export type UserSafe = Omit<User, 'password'>;

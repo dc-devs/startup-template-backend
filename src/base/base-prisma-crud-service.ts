@@ -1,4 +1,4 @@
-import { IBasePrismaCrudService } from './base-pisma-crud-service.inteface';
+import { IBasePrismaCrudService } from './base-prisma-crud-service.inteface';
 import { PrismaService } from '../services/prisma.service';
 
 export class BasePrismaCrudService<
@@ -18,9 +18,9 @@ export class BasePrismaCrudService<
 			DeleteOneArgs
 		>
 {
-	private modelName: string;
+	protected modelName: string;
 	protected prisma: PrismaService;
-	private select: Record<string, boolean>;
+	protected select: Record<string, boolean>;
 
 	constructor({ prisma, select, modelName }) {
 		this.prisma = prisma;
@@ -35,18 +35,18 @@ export class BasePrismaCrudService<
 		});
 	}
 
-	async findAll(findManyArgs: FindManyArgs): Promise<Entity[]> {
+	findAll(findManyArgs: FindManyArgs): Promise<Entity[]> {
 		return this.prisma?.[this.modelName].findMany(findManyArgs);
 	}
 
-	async create(createOneArgs: CreateOneArgs): Promise<Entity> {
+	create(createOneArgs: CreateOneArgs): Promise<Entity> {
 		return this.prisma?.[this.modelName].create({
 			...createOneArgs,
 			select: this.select,
 		});
 	}
 
-	async update(updateOneArgs: UpdateOneArgs): Promise<Entity> {
+	update(updateOneArgs: UpdateOneArgs): Promise<Entity> {
 		return this.prisma?.[this.modelName].update({
 			...updateOneArgs,
 			select: this.select,
