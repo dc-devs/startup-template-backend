@@ -1,7 +1,7 @@
+import { Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
-import { User } from '../common/@generated/user/user.model';
 import { UserSafe } from './common/entities/user-safe';
-import { Resolver /*,Query, Mutation, Args*/ } from '@nestjs/graphql';
+import { User } from '../common/@generated/user/user.model';
 import { BaseGraphqlCrudResolver } from '../../base/base-graphql-crud-resolver';
 import { FindManyUserArgs } from '../common/@generated/user/find-many-user.args';
 import { FindUniqueUserArgs } from '../common/@generated/user/find-unique-user.args';
@@ -18,11 +18,12 @@ export class UsersResolver extends BaseGraphqlCrudResolver<
 	UpdateOneUserArgs,
 	DeleteOneUserArgs
 >({
-	findUniqueArgsType: FindUniqueUserArgs,
-	findManyArgsType: FindManyUserArgs,
-	createOneArgsType: CreateOneUserArgs,
-	updateOneArgsType: UpdateOneUserArgs,
-	deleteOneArgsType: DeleteOneUserArgs,
+	entity: User,
+	findUniqueArgs: FindUniqueUserArgs,
+	findManyArgs: FindManyUserArgs,
+	createOneArgs: CreateOneUserArgs,
+	updateOneArgs: UpdateOneUserArgs,
+	deleteOneArgs: DeleteOneUserArgs,
 }) {
 	constructor(protected usersService: UsersService) {
 		super({ baseService: usersService });

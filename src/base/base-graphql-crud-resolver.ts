@@ -1,6 +1,5 @@
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { User } from '../models/common/@generated/user/user.model';
 import { IBasePrismaCrudService } from './base-prisma-crud-service.inteface';
 
 export function BaseGraphqlCrudResolver<
@@ -11,17 +10,19 @@ export function BaseGraphqlCrudResolver<
 	UpdateOneArgs,
 	DeleteOneArgs,
 >({
-	findUniqueArgsType,
-	findManyArgsType,
-	createOneArgsType,
-	updateOneArgsType,
-	deleteOneArgsType,
+	entity,
+	findUniqueArgs,
+	findManyArgs,
+	createOneArgs,
+	updateOneArgs,
+	deleteOneArgs,
 }: {
-	findUniqueArgsType: Type<FindUniqueArgs>;
-	findManyArgsType: Type<FindManyArgs>;
-	createOneArgsType: Type<CreateOneArgs>;
-	updateOneArgsType: Type<UpdateOneArgs>;
-	deleteOneArgsType: Type<DeleteOneArgs>;
+	entity: Type<Entity>;
+	findUniqueArgs: Type<FindUniqueArgs>;
+	findManyArgs: Type<FindManyArgs>;
+	createOneArgs: Type<CreateOneArgs>;
+	updateOneArgs: Type<UpdateOneArgs>;
+	deleteOneArgs: Type<DeleteOneArgs>;
 }) {
 	@Resolver({ isAbstract: true })
 	abstract class BaseGraphqlCrudResolverAbstract {
@@ -49,47 +50,47 @@ export function BaseGraphqlCrudResolver<
 			this.baseService = baseService;
 		}
 
-		@Query(() => User, {
-			name: `findOneUser`,
+		@Query(() => entity, {
+			name: `findOne${entity.name}`,
 			nullable: true,
 		})
 		findOne(
-			@Args({ type: () => findUniqueArgsType })
-			findUniqueArgs: FindUniqueArgs,
+			@Args({ type: () => findUniqueArgs })
+			args: FindUniqueArgs,
 		): Promise<Entity | null> {
-			return this.baseService.findOne(findUniqueArgs);
+			return this.baseService.findOne(args);
 		}
 
-		@Query(() => [User], { name: `findAllUsers` })
+		@Query(() => [entity], { name: `findAll${entity.name}s` })
 		findAll(
-			@Args({ type: () => findManyArgsType })
-			findManyArgs: FindManyArgs,
+			@Args({ type: () => findManyArgs })
+			args: FindManyArgs,
 		): Promise<Entity[]> {
-			return this.baseService.findAll(findManyArgs);
+			return this.baseService.findAll(args);
 		}
 
-		@Mutation(() => User, { name: `createUser` })
+		@Mutation(() => entity, { name: `create${entity.name}` })
 		async create(
-			@Args({ type: () => createOneArgsType })
-			createOneArgs: CreateOneArgs,
+			@Args({ type: () => createOneArgs })
+			args: CreateOneArgs,
 		): Promise<Entity> {
-			return await this.baseService.create(createOneArgs);
+			return await this.baseService.create(args);
 		}
 
-		@Mutation(() => User, { name: `updateUser` })
+		@Mutation(() => entity, { name: `update${entity.name}` })
 		async update(
-			@Args({ type: () => updateOneArgsType })
-			updateOneArgs: UpdateOneArgs,
+			@Args({ type: () => updateOneArgs })
+			args: UpdateOneArgs,
 		): Promise<Entity> {
-			return await this.baseService.update(updateOneArgs);
+			return await this.baseService.update(args);
 		}
 
-		@Mutation(() => User, { name: `deleteUser` })
+		@Mutation(() => entity, { name: `delete${entity.name}` })
 		async delete(
-			@Args({ type: () => deleteOneArgsType })
-			deleteOneArgs: DeleteOneArgs,
+			@Args({ type: () => deleteOneArgs })
+			args: DeleteOneArgs,
 		): Promise<Entity> {
-			return await this.baseService.delete(deleteOneArgs);
+			return await this.baseService.delete(args);
 		}
 	}
 
