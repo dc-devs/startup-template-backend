@@ -28,13 +28,10 @@ enum UserRole {
 
 model User {
 	id						Int				@default(autoincrement()) @id
-	/// @Validator.IsEmail
+	/// @Validator.IsEmail()
 	email					String			@unique
-	/// @Field({ nullable: true })
-	/// @HideField()
-	/// @Validator.IsString
+	/// @Validator.IsString()
 	/// @Validator.MinLength(8)
-	/// @TypeGraphQL.omit(output: true)
 	password				String
 	role					UserRole		@default(USER)
 	createdAt				DateTime		@default(now())
