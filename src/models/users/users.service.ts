@@ -5,7 +5,7 @@ import { PrismaService } from '../../services/prisma.service';
 import { BasePrismaCrudService } from 'src/base/base-prisma-crud-service';
 import { encodePassword } from '../../models/users/common/utils/encode-password';
 import { FindManyUserArgs } from '../common/@generated/user/find-many-user.args';
-import { CreateOneUserArgs } from '../common/@generated/user/create-one-user.args';
+import { UserCreateInput } from '../common/@generated/user/user-create.input';
 import { UpdateOneUserArgs } from '../common/@generated/user/update-one-user.args';
 import { DeleteOneUserArgs } from '../common/@generated/user/delete-one-user.args';
 import { FindUniqueUserArgs } from '../common/@generated/user/find-unique-user.args';
@@ -15,7 +15,7 @@ export class UsersService extends BasePrismaCrudService<
 	UserSafe,
 	FindUniqueUserArgs,
 	FindManyUserArgs,
-	CreateOneUserArgs,
+	UserCreateInput,
 	UpdateOneUserArgs,
 	DeleteOneUserArgs
 > {
@@ -27,8 +27,7 @@ export class UsersService extends BasePrismaCrudService<
 		});
 	}
 
-	create(createOneUserArgs: CreateOneUserArgs): Promise<UserSafe> {
-		const { data } = createOneUserArgs;
+	create(data: UserCreateInput): Promise<UserSafe> {
 		const { email, password } = data;
 		const encodedPassword = encodePassword(password);
 		const emailLowerCase = email.toLowerCase();

@@ -129,10 +129,9 @@ input StringFilter {
 
 type User {
   createdAt: DateTime!
-
-  """@Validator.IsEmail"""
   email: String!
   id: ID!
+  password: String!
   role: UserRole!
   updatedAt: DateTime!
 }

@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import * as Validator from 'class-validator';
 import { UserWhereInput } from './user-where.input';
 import { StringFilter } from '../prisma/string-filter.input';
 import { EnumUserRoleFilter } from '../prisma/enum-user-role-filter.input';
@@ -13,6 +14,7 @@ export class UserWhereUniqueInput {
     id?: number;
 
     @Field(() => String, {nullable:true})
+    @Validator.IsEmail()
     email?: string;
 
     @Field(() => [UserWhereInput], {nullable:true})

@@ -6,21 +6,21 @@ export function BaseGraphqlCrudResolver<
 	Entity,
 	FindUniqueArgs,
 	FindManyArgs,
-	CreateOneArgs,
+	CreateOneInput,
 	UpdateOneArgs,
 	DeleteOneArgs,
 >({
 	entity,
 	findUniqueArgs,
 	findManyArgs,
-	createOneArgs,
+	createOneInput,
 	updateOneArgs,
 	deleteOneArgs,
 }: {
 	entity: Type<Entity>;
 	findUniqueArgs: Type<FindUniqueArgs>;
 	findManyArgs: Type<FindManyArgs>;
-	createOneArgs: Type<CreateOneArgs>;
+	createOneInput: Type<CreateOneInput>;
 	updateOneArgs: Type<UpdateOneArgs>;
 	deleteOneArgs: Type<DeleteOneArgs>;
 }) {
@@ -30,7 +30,7 @@ export function BaseGraphqlCrudResolver<
 			Entity,
 			FindUniqueArgs,
 			FindManyArgs,
-			CreateOneArgs,
+			CreateOneInput,
 			UpdateOneArgs,
 			DeleteOneArgs
 		>;
@@ -42,7 +42,7 @@ export function BaseGraphqlCrudResolver<
 				Entity,
 				FindUniqueArgs,
 				FindManyArgs,
-				CreateOneArgs,
+				CreateOneInput,
 				UpdateOneArgs,
 				DeleteOneArgs
 			>;
@@ -71,10 +71,11 @@ export function BaseGraphqlCrudResolver<
 
 		@Mutation(() => entity, { name: `create${entity.name}` })
 		async create(
-			@Args({ type: () => createOneArgs })
-			args: CreateOneArgs,
+			@Args('data', { type: () => createOneInput })
+			data: // @ts-expect-error: Valid Type NestJs
+			createOneInput,
 		): Promise<Entity> {
-			return await this.baseService.create(args);
+			return await this.baseService.create(data);
 		}
 
 		@Mutation(() => entity, { name: `update${entity.name}` })

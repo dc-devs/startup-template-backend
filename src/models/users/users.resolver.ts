@@ -5,7 +5,7 @@ import { User } from '../common/@generated/user/user.model';
 import { BaseGraphqlCrudResolver } from '../../base/base-graphql-crud-resolver';
 import { FindManyUserArgs } from '../common/@generated/user/find-many-user.args';
 import { FindUniqueUserArgs } from '../common/@generated/user/find-unique-user.args';
-import { CreateOneUserArgs } from '../common/@generated/user/create-one-user.args';
+import { UserCreateInput } from '../common/@generated/user/user-create.input';
 import { UpdateOneUserArgs } from '../common/@generated/user/update-one-user.args';
 import { DeleteOneUserArgs } from '../common/@generated/user/delete-one-user.args';
 
@@ -14,14 +14,14 @@ export class UsersResolver extends BaseGraphqlCrudResolver<
 	UserSafe,
 	FindUniqueUserArgs,
 	FindManyUserArgs,
-	CreateOneUserArgs,
+	UserCreateInput,
 	UpdateOneUserArgs,
 	DeleteOneUserArgs
 >({
 	entity: User,
 	findUniqueArgs: FindUniqueUserArgs,
 	findManyArgs: FindManyUserArgs,
-	createOneArgs: CreateOneUserArgs,
+	createOneInput: UserCreateInput,
 	updateOneArgs: UpdateOneUserArgs,
 	deleteOneArgs: DeleteOneUserArgs,
 }) {

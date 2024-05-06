@@ -5,7 +5,7 @@ export class BasePrismaCrudService<
 	Entity,
 	FindUniqueArgs,
 	FindManyArgs,
-	CreateOneArgs,
+	CreateOneInput,
 	UpdateOneArgs,
 	DeleteOneArgs,
 > implements
@@ -13,7 +13,7 @@ export class BasePrismaCrudService<
 			Entity,
 			FindUniqueArgs,
 			FindManyArgs,
-			CreateOneArgs,
+			CreateOneInput,
 			UpdateOneArgs,
 			DeleteOneArgs
 		>
@@ -39,9 +39,9 @@ export class BasePrismaCrudService<
 		return this.prisma?.[this.modelName].findMany(findManyArgs);
 	}
 
-	create(createOneArgs: CreateOneArgs): Promise<Entity> {
+	create(data: CreateOneInput): Promise<Entity> {
 		return this.prisma?.[this.modelName].create({
-			...createOneArgs,
+			data,
 			select: this.select,
 		});
 	}

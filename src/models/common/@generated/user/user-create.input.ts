@@ -7,9 +7,11 @@ import { UserRole } from '../prisma/user-role.enum';
 export class UserCreateInput {
 
     @Field(() => String, {nullable:false})
+    @Validator.IsEmail()
     email!: string;
 
     @Field(() => String, {nullable:false})
+    @Validator.IsString()
     @Validator.MinLength(8)
     password!: string;
 
