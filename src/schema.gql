@@ -7,10 +7,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input DateTimeFieldUpdateOperationsInput {
-  set: DateTime
-}
-
 input DateTimeFilter {
   equals: DateTime
   gt: DateTime
@@ -20,10 +16,6 @@ input DateTimeFilter {
   lte: DateTime
   not: NestedDateTimeFilter
   notIn: [DateTime!]
-}
-
-input EnumUserRoleFieldUpdateOperationsInput {
-  set: UserRole
 }
 
 input EnumUserRoleFilter {
@@ -47,7 +39,7 @@ input IntFilter {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  updateUser(data: UserUpdateInput!, where: Int!): User!
 }
 
 input NestedDateTimeFilter {
@@ -108,10 +100,6 @@ enum SortOrder {
   desc
 }
 
-input StringFieldUpdateOperationsInput {
-  set: String
-}
-
 input StringFilter {
   contains: String
   endsWith: String
@@ -169,11 +157,11 @@ enum UserScalarFieldEnum {
 }
 
 input UserUpdateInput {
-  createdAt: DateTimeFieldUpdateOperationsInput
-  email: StringFieldUpdateOperationsInput
-  password: StringFieldUpdateOperationsInput
-  role: EnumUserRoleFieldUpdateOperationsInput
-  updatedAt: DateTimeFieldUpdateOperationsInput
+  createdAt: DateTime
+  email: String
+  password: String
+  role: UserRole
+  updatedAt: DateTime
 }
 
 input UserWhereInput {

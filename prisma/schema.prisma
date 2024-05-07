@@ -13,6 +13,7 @@ generator nestgraphql {
 	output = "../src/models/common/@generated"
 	fields_Validator_from = "class-validator"
 	fields_Validator_input = true
+	noAtomicOperations = true
 }
 
 datasource db {
@@ -28,8 +29,10 @@ enum UserRole {
 
 model User {
 	id						Int				@default(autoincrement()) @id
+	/// @Validator.IsOptional()
 	/// @Validator.IsEmail()
 	email					String			@unique
+	/// @Validator.IsOptional()
 	/// @Validator.IsString()
 	/// @Validator.MinLength(8)
 	password				String

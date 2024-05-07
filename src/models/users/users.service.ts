@@ -6,7 +6,7 @@ import { BasePrismaCrudService } from 'src/base/base-prisma-crud-service';
 import { encodePassword } from '../../models/users/common/utils/encode-password';
 import { FindManyUserArgs } from '../common/@generated/user/find-many-user.args';
 import { UserCreateInput } from '../common/@generated/user/user-create.input';
-import { UpdateOneUserArgs } from '../common/@generated/user/update-one-user.args';
+import { UserUpdateInput } from '../common/@generated/user/user-update.input';
 import { DeleteOneUserArgs } from '../common/@generated/user/delete-one-user.args';
 import { FindUniqueUserArgs } from '../common/@generated/user/find-unique-user.args';
 
@@ -16,7 +16,7 @@ export class UsersService extends BasePrismaCrudService<
 	FindUniqueUserArgs,
 	FindManyUserArgs,
 	UserCreateInput,
-	UpdateOneUserArgs,
+	UserUpdateInput,
 	DeleteOneUserArgs
 > {
 	constructor(protected prisma: PrismaService) {

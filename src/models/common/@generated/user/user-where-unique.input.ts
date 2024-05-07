@@ -14,6 +14,7 @@ export class UserWhereUniqueInput {
     id?: number;
 
     @Field(() => String, {nullable:true})
+    @Validator.IsOptional()
     @Validator.IsEmail()
     email?: string;
 

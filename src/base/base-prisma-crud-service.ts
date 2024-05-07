@@ -6,7 +6,7 @@ export class BasePrismaCrudService<
 	FindUniqueArgs,
 	FindManyArgs,
 	CreateOneInput,
-	UpdateOneArgs,
+	UpdateOneInput,
 	DeleteOneArgs,
 > implements
 		IBasePrismaCrudService<
@@ -14,7 +14,7 @@ export class BasePrismaCrudService<
 			FindUniqueArgs,
 			FindManyArgs,
 			CreateOneInput,
-			UpdateOneArgs,
+			UpdateOneInput,
 			DeleteOneArgs
 		>
 {
@@ -46,9 +46,16 @@ export class BasePrismaCrudService<
 		});
 	}
 
-	update(updateOneArgs: UpdateOneArgs): Promise<Entity> {
+	update({
+		where,
+		data,
+	}: {
+		where: number;
+		data: UpdateOneInput;
+	}): Promise<Entity> {
 		return this.prisma?.[this.modelName].update({
-			...updateOneArgs,
+			where: { id: where },
+			data,
 			select: this.select,
 		});
 	}

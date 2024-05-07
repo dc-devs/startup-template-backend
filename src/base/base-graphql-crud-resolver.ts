@@ -1,4 +1,4 @@
-import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
+import { Args, Query, Resolver, Mutation, Int } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
 import { IBasePrismaCrudService } from './base-prisma-crud-service.inteface';
 
@@ -7,21 +7,21 @@ export function BaseGraphqlCrudResolver<
 	FindUniqueArgs,
 	FindManyArgs,
 	CreateOneInput,
-	UpdateOneArgs,
+	UpdateOneInput,
 	DeleteOneArgs,
 >({
 	entity,
 	findUniqueArgs,
 	findManyArgs,
 	createOneInput,
-	updateOneArgs,
+	updateOneInput,
 	deleteOneArgs,
 }: {
 	entity: Type<Entity>;
 	findUniqueArgs: Type<FindUniqueArgs>;
 	findManyArgs: Type<FindManyArgs>;
 	createOneInput: Type<CreateOneInput>;
-	updateOneArgs: Type<UpdateOneArgs>;
+	updateOneInput: Type<UpdateOneInput>;
 	deleteOneArgs: Type<DeleteOneArgs>;
 }) {
 	@Resolver({ isAbstract: true })
@@ -31,7 +31,7 @@ export function BaseGraphqlCrudResolver<
 			FindUniqueArgs,
 			FindManyArgs,
 			CreateOneInput,
-			UpdateOneArgs,
+			UpdateOneInput,
 			DeleteOneArgs
 		>;
 
@@ -43,7 +43,7 @@ export function BaseGraphqlCrudResolver<
 				FindUniqueArgs,
 				FindManyArgs,
 				CreateOneInput,
-				UpdateOneArgs,
+				UpdateOneInput,
 				DeleteOneArgs
 			>;
 		}) {
@@ -80,10 +80,13 @@ export function BaseGraphqlCrudResolver<
 
 		@Mutation(() => entity, { name: `update${entity.name}` })
 		async update(
-			@Args({ type: () => updateOneArgs })
-			args: UpdateOneArgs,
+			@Args('where', { type: () => Int })
+			where: number,
+			@Args('data', { type: () => updateOneInput })
+			data: // @ts-expect-error: Valid Type NestJs
+			updateOneInput,
 		): Promise<Entity> {
-			return await this.baseService.update(args);
+			return await this.baseService.update({ where, data });
 		}
 
 		@Mutation(() => entity, { name: `delete${entity.name}` })

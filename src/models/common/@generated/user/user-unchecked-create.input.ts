@@ -11,10 +11,12 @@ export class UserUncheckedCreateInput {
     id?: number;
 
     @Field(() => String, {nullable:false})
+    @Validator.IsOptional()
     @Validator.IsEmail()
     email!: string;
 
     @Field(() => String, {nullable:false})
+    @Validator.IsOptional()
     @Validator.IsString()
     @Validator.MinLength(8)
     password!: string;
