@@ -39,7 +39,7 @@ input IntFilter {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
-  updateUser(data: UserUpdateInput!, where: Int!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
 
 input NestedDateTimeFilter {

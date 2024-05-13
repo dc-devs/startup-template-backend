@@ -1,10 +1,11 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AppController } from './app.controller';
 import { UsersModule } from './models/users/users.module';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
 	imports: [
@@ -12,6 +13,21 @@ import { UsersModule } from './models/users/users.module';
 			driver: ApolloDriver,
 			autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
 			sortSchema: true,
+			// plugins,
+			// debug: false,
+			playground: false,
+			// cors: corsOptions,
+			context: ({ req, res }) => ({ req, res }),
+			formatError: (error: GraphQLError) => {
+				const graphQLFormattedError: GraphQLFormattedError = {
+					message: !error.message.includes('prisma')
+						? error.message
+						: 'Database Error',
+					extensions: error.extensions,
+				};
+
+				return graphQLFormattedError;
+			},
 		}),
 		UsersModule,
 	],

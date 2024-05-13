@@ -3,6 +3,7 @@ import { PrismaService } from '../services/prisma.service';
 
 export class BasePrismaCrudService<
 	Entity,
+	WhereUniqueInput,
 	FindUniqueArgs,
 	FindManyArgs,
 	CreateOneInput,
@@ -11,6 +12,7 @@ export class BasePrismaCrudService<
 > implements
 		IBasePrismaCrudService<
 			Entity,
+			WhereUniqueInput,
 			FindUniqueArgs,
 			FindManyArgs,
 			CreateOneInput,
@@ -50,11 +52,11 @@ export class BasePrismaCrudService<
 		where,
 		data,
 	}: {
-		where: number;
+		where: WhereUniqueInput;
 		data: UpdateOneInput;
 	}): Promise<Entity> {
 		return this.prisma?.[this.modelName].update({
-			where: { id: where },
+			where,
 			data,
 			select: this.select,
 		});

@@ -1,5 +1,6 @@
 export interface IBasePrismaCrudService<
 	Entity,
+	WhereUniqueInput,
 	FindUniqueArgs,
 	FindManyArgs,
 	CreateOneInput,
@@ -13,7 +14,7 @@ export interface IBasePrismaCrudService<
 		where,
 		data,
 	}: {
-		where: number;
+		where: WhereUniqueInput;
 		data: UpdateOneInput;
 	}): Promise<Entity>;
 	delete(deleteOneUserArgs: DeleteUserArgs): Promise<Entity>;
