@@ -1,6 +1,6 @@
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { IBasePrismaCrudService } from './base-prisma-crud-service.inteface';
+import { IBasePrismaCrudService } from '../service/base-prisma-crud-service.inteface';
 
 export function BaseGraphqlCrudResolver<
 	Entity,

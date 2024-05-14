@@ -1,5 +1,5 @@
 import { IBasePrismaCrudService } from './base-prisma-crud-service.inteface';
-import { PrismaService } from '../services/prisma.service';
+import { PrismaService } from '../../services/prisma.service';
 
 export class BasePrismaCrudService<
 	Entity,
