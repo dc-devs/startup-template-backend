@@ -1,4 +1,4 @@
-import { Logger } from '../../base/utils/logger';
+import { Logger } from '../../base/utils';
 
 interface IOptions {
 	port: string | number;
