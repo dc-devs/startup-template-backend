@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserSafe } from './common/entities/user-safe';
 import { modelName, select } from './common/constants';
-import { PrismaService } from '../../services/prisma.service';
-import { BasePrismaCrudService } from 'src/base/service/base-prisma-crud-service';
+import { PrismaService } from '../../base/services/prisma.service';
+import { BasePrismaCrudService } from 'src/base/app/service/base-prisma-crud-service';
 import { encodePassword } from '../../models/users/common/utils/encode-password';
 import { UserWhereUniqueInput } from '../common/@generated/user/user-where-unique.input';
 import { FindManyUserArgs } from '../common/@generated/user/find-many-user.args';

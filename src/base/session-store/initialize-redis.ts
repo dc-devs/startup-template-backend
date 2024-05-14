@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { Logger } from '../../base/utils';
+import { Logger } from '../common/utils';
 
 let connectedRedisClient;
 

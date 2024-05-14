@@ -1,5 +1,5 @@
 import { Port } from '../enums';
-import { isTestEnv, isProductionEnv } from '../../base/constants/environment';
+import { isTestEnv, isProductionEnv } from '../../common/constants/environment';
 
 export const testOrDevPort = isTestEnv ? Port.Test : Port.Development;
 
