@@ -36,9 +36,16 @@ input IntFilter {
   notIn: [Int!]
 }
 
+type LogOutResponse {
+  isAuthenticated: Boolean!
+  userId: Float!
+}
+
 type Mutation {
   createUser(data: UserCreateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
+  logOut(userId: Float!): LogOutResponse!
+  login: SessionResponse!
   signUp(data: UserCreateInput!): SessionResponse!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
@@ -87,6 +94,7 @@ input NestedStringFilter {
 }
 
 type Query {
+  currentUser: SessionResponse!
   findAllUsers(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
   findOneUser(where: UserWhereUniqueInput!): User
 }

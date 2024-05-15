@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { Cookie } from './common/enums';
 import * as session from 'express-session';
 import RedisStore from 'connect-redis';
@@ -14,9 +15,12 @@ export const initializeSession = async () => {
 		resave: false,
 		saveUninitialized: false,
 		secret: SessionSecret,
+		genid: () => {
+			return uuidv4();
+		},
 		cookie: {
-			httpOnly: true,
 			secure: true,
+			httpOnly: true,
 			maxAge: sixtyDays,
 			sameSite: 'none',
 		},

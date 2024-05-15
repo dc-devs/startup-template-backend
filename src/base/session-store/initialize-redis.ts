@@ -4,17 +4,14 @@ import { Logger } from '../common/utils';
 let connectedRedisClient;
 
 const redisClient = createClient({
-	legacyMode: true,
+	// legacyMode: true,
 	url: process.env.REDIS_URL,
 });
 
 const initializeRedis = async () => {
 	return new Promise(async (resolve, reject) => {
 		redisClient.on('error', (error) => {
-			Logger.error(
-				'Redis:',
-				`Could not establish a connection with redis. ${error}`,
-			);
+			Logger.error('Redis:', error);
 			console.log('');
 
 			reject(error);
@@ -22,6 +19,10 @@ const initializeRedis = async () => {
 
 		redisClient.on('connect', () => {
 			Logger.debug('Redis::event', 'connect');
+		});
+
+		redisClient.on('ready', () => {
+			Logger.debug('Redis::event', 'ready');
 			console.log('');
 
 			connectedRedisClient = redisClient;

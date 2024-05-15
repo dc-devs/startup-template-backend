@@ -14,13 +14,13 @@ export class AuthResolver {
 		private usersService: UsersService,
 	) {}
 
-	// @Mutation(() => SessionResponse)
-	// @UseGuards(IsValidUser, LogInUser)
-	// async login(@Context('req') request) {
-	// 	const { user } = request;
+	@Mutation(() => SessionResponse)
+	@UseGuards(IsValidUser, LogInUser)
+	async login(@Context('req') request) {
+		const { user } = request;
 
-	// 	return { isAuthenticated: true, user };
-	// }
+		return { isAuthenticated: true, user };
+	}
 
 	@Mutation(() => SessionResponse)
 	async signUp(
@@ -40,32 +40,30 @@ export class AuthResolver {
 
 			return { isAuthenticated: true, user: loggedInUser };
 		} catch (error) {
-			console.error(error);
 			generateGraphQLError(error);
 		}
 	}
 
-	// @Query(() => SessionResponse)
-	// @UseGuards(IsAuthenticated)
-	// async currentUser(@Context('req') request) {
-	// 	const { user } = request;
+	@Query(() => SessionResponse)
+	@UseGuards(IsAuthenticated)
+	async currentUser(@Context('req') request) {
+		const { user } = request;
 
-	// 	return { isAuthenticated: true, user };
-	// }
+		return { isAuthenticated: true, user };
+	}
 
-	// @Mutation(() => LogOutResponse)
-	// logOut(
-	// 	@Context('res') response,
-	// 	@Context('req') request,
-	// 	@Args('userId') userId: number,
-	// ) {
-	// 	try {
-	// 		this.authService.logOut({ request, response, userId });
+	@Mutation(() => LogOutResponse)
+	logOut(
+		@Context('res') response,
+		@Context('req') request,
+		@Args('userId') userId: number,
+	) {
+		try {
+			this.authService.logOut({ request, response, userId });
 
-	// 		return { isAuthenticated: false, userId };
-	// 	} catch (error) {
-	// 		// generateGraphQLError(error);
-	// 		console.error(error);
-	// 	}
-	// }
+			return { isAuthenticated: false, userId };
+		} catch (error) {
+			generateGraphQLError(error);
+		}
+	}
 }
