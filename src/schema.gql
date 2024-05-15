@@ -39,6 +39,7 @@ input IntFilter {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
+  signUp(data: UserCreateInput!): SessionResponse!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
 
@@ -93,6 +94,11 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+type SessionResponse {
+  isAuthenticated: Boolean
+  user: User
 }
 
 enum SortOrder {

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AppController } from './app.controller';
+import { AuthModule } from './models/auth/auth.module';
 import { UsersModule } from './models/users/users.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
@@ -15,7 +16,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 			sortSchema: true,
 			// plugins,
 			// debug: false,
-			playground: false,
+			// playground: false,
 			// cors: corsOptions,
 			context: ({ req, res }) => ({ req, res }),
 			formatError: (error: GraphQLError) => {
@@ -30,6 +31,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 			},
 		}),
 		UsersModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

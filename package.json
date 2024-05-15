@@ -28,7 +28,7 @@
 		"docker:dev:down": "docker compose -f docker-compose.dev.yaml down"
 	},
 	"dependencies": {
-		"@apollo/server": "^4.10.2",
+		"@apollo/server": "^4.10.4",
 		"@colors/colors": "^1.6.0",
 		"@nestjs/apollo": "^12.1.0",
 		"@nestjs/common": "^10.0.0",
