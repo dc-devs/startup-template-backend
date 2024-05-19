@@ -1,8 +1,14 @@
 services:
   database-development:
-    container_name: 'database-development'
+    container_name: database-development
     image: postgres:16.2
     restart: always
+    healthcheck:
+      test: nc -z -w 1 localhost 5432
+      interval: 5s
+      timeout: 300s
+      retries: 10
+      start_period: 120s
     environment:
       - POSTGRES_USER=node_api
       - POSTGRES_PASSWORD=node_api_password
@@ -12,18 +18,70 @@ services:
     volumes: 
       - database-development:/var/lib/postgresql/data
   redis-development:
-    container_name: 'redis-development'
+    container_name: redis-development
     image: redis:7.2.4
     restart: always
+    healthcheck:
+      test: nc -z -w 1 localhost 6379
+      interval: 5s
+      timeout: 300s
+      retries: 10
+      start_period: 120s
     ports:
       - '6379:6379'
     command: redis-server --save 20 1
     volumes: 
       - redis-development:/data
+  # app-development:
+  #   container_name: app-development
+  #   image: app-development
+  #   build:
+  #     context: .
+  #     target: development
+  #     dockerfile: ./Dockerfile
+  #   healthcheck:
+  #     test: nc -z -w 1 localhost 3001
+  #     interval: 5s
+  #     timeout: 300s
+  #     retries: 10
+  #     start_period: 120s
+  #   environment:
+  #     - DATABASE_URL=postgresql://node_api:node_api_password@database-test:5432/node_api
+  #     - REDIS_URL=redis://redis-test:6379
+  #     - SESSION_SECRET=F1B875D3993B852E581AA2C537F9D375F55BF52D9582F4578034EB645F7065D0
+  #   ports:
+  #     - '3001:3001'
+  #   # working_dir: /usr/src/app
+  #   volumes:
+  #     - .:/usr/src/app
+  #   # command:
+  #     # sh -c "yarn config set 'strict ssl' false && yarn && yarn:start:dev"
+  #   links:
+  #     - redis-development:redis-development
+  #     - database-development:database-development
+  #   depends_on:
+  #     database-development:
+  #       condition: service_healthy
+  #     redis-development:
+  #       condition: service_healthy
+  nginx-development:
+    image: nginx-development
+    container_name: nginx-development
+    build:
+      context: .
+      dockerfile: ./src/base/docker/nginx/Dockerfile
+    ports: 
+      - 80:80
+      - 443:443
+    volumes:
+      - ./src/base/certs:/etc/nginx/certs
+      - ./src/base/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   database-development:
     driver: local
   redis-development:
     driver: local
+  # app-development:
+  #   driver: local
 

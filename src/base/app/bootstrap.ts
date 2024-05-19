@@ -5,7 +5,7 @@ import { logInitMessage } from '../common/utils';
 import { initializeSession } from '../session-store';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { port, corsOptions, validationPipe } from '../server/config';
-import { isProductionEnv, environment } from '../common/constants/environment';
+import { environment, isProductionEnv } from '../common/constants/environment';
 
 export async function bootstrap<AppModule>({
 	AppModule,

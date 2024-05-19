@@ -1,5 +1,5 @@
 export enum Port {
 	Test = 3002,
-	Development = 3000,
-	Production = 3001,
+	Development = 3001,
+	Production = 3000,
 }

@@ -39,3 +39,8 @@ lerna-debug.log*
 .env.development
 .env.production
 .env.test
+
+# certs
+src/base/certs
+
+scratch

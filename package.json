@@ -25,7 +25,8 @@
 		"prisma:dev:reset": "dotenv -e .env.development -- yarn prisma migrate reset --force",
 		"prisma:dev:seed": "dotenv -e .env.development -- ts-node prisma/seed.ts",
 		"docker:dev:up": "docker compose -f docker-compose.dev.yaml up",
-		"docker:dev:down": "docker compose -f docker-compose.dev.yaml down"
+		"docker:dev:down": "docker compose -f docker-compose.dev.yaml down --remove-orphans",
+		"gen:certs": "./src/base/npm-scripts/generate-certs.sh"
 	},
 	"dependencies": {
 		"@apollo/server": "^4.10.4",
@@ -37,6 +38,7 @@
 		"@nestjs/graphql": "^12.1.1",
 		"@nestjs/platform-express": "^10.0.0",
 		"@prisma/client": "5.12.1",
+		"apollo-server-core": "^3.13.0",
 		"bcrypt": "^5.1.1",
 		"class-validator": "^0.14.1",
 		"connect-redis": "^7.1.1",
