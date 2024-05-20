@@ -63,11 +63,11 @@ export class AuthService {
 	logOut({ request, response, userId }: ILogOutProps) {
 		request.session.userId = undefined;
 
-		response.cookie(Cookie.NAME, null, {
+		response.cookie(Cookie.Name, null, {
 			httpOnly: true,
 			secure: true,
 			sameSite: 'none',
-			expires: new Date(Cookie.EXPIRED_DATE),
+			expires: new Date(Cookie.ExpireDate),
 		});
 
 		request.session.destroy();

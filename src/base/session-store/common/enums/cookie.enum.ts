@@ -1,5 +1,6 @@
 export const enum Cookie {
-	NAME = '_stb_session',
-	SET_COOKIE = 'Set-Cookie',
-	EXPIRED_DATE = 'Thu, 01 Jan 1970 00:00:00 GMT',
+	Name = '_stb_session',
+	SetCookie = 'Set-Cookie',
+	ExpireDate = 'Thu, 01 Jan 1970 00:00:00 GMT',
+	Domain = 'api.local-startup-template.io',
 }

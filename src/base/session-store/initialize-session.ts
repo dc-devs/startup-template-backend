@@ -11,9 +11,9 @@ export const initializeSession = async () => {
 
 	const sessionConfig = {
 		store: new RedisStore({ client: redisClient }),
-		name: Cookie.NAME,
+		name: Cookie.Name,
 		resave: false,
-		saveUninitialized: false,
+		saveUninitialized: true,
 		secret: SessionSecret,
 		genid: () => {
 			return uuidv4();
@@ -21,6 +21,7 @@ export const initializeSession = async () => {
 		cookie: {
 			secure: true,
 			httpOnly: true,
+			domain: Cookie.Domain,
 			maxAge: sixtyDays,
 			sameSite: 'none',
 		},

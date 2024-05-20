@@ -4,7 +4,6 @@ import { Logger } from '../common/utils';
 let connectedRedisClient;
 
 const redisClient = createClient({
-	// legacyMode: true,
 	url: process.env.REDIS_URL,
 });
 
