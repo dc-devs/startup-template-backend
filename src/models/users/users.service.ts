@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserSafe } from './common/entities/user-safe';
 import { modelName, select } from './common/constants';
-import { PrismaService } from '../../base/services/prisma.service';
+import { PrismaService } from '../../base/services/prisma/prisma.service';
 import { User as UserUnsafe } from '../common/@generated/user/user.model';
 import { UserCreateInput } from '../common/@generated/user/user-create.input';
 import { UserUpdateInput } from '../common/@generated/user/user-update.input';

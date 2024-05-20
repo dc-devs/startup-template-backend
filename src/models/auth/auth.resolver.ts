@@ -4,7 +4,7 @@ import { SessionInput } from './dto/inputs';
 import { UsersService } from '../users/users.service';
 import { SessionResponse, LogOutResponse } from './dto/models';
 import { Resolver, Mutation, Query, Args, Context } from '@nestjs/graphql';
-import generateGraphQLError from '../../graphql/errors/generate-graphql-error';
+import generateGraphQLError from '../../base/services/graphql/errors/generate-graphql-error';
 import { UserCreateInput } from '../common/@generated/user/user-create.input';
 import { SignInUser, IsValidUser, IsAuthenticated } from './guards';
 
