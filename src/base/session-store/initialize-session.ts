@@ -13,7 +13,7 @@ export const initializeSession = async () => {
 		store: new RedisStore({ client: redisClient }),
 		name: Cookie.Name,
 		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: false,
 		secret: SessionSecret,
 		genid: () => {
 			return uuidv4();

@@ -1,11 +1,12 @@
 import { UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { SessionInput } from './dto/inputs';
 import { UsersService } from '../users/users.service';
 import { SessionResponse, LogOutResponse } from './dto/models';
 import { Resolver, Mutation, Query, Args, Context } from '@nestjs/graphql';
 import generateGraphQLError from '../../graphql/errors/generate-graphql-error';
 import { UserCreateInput } from '../common/@generated/user/user-create.input';
-import { LogInUser, IsValidUser, IsAuthenticated } from './guards';
+import { SignInUser, IsValidUser, IsAuthenticated } from './guards';
 
 @Resolver()
 export class AuthResolver {
@@ -13,14 +14,6 @@ export class AuthResolver {
 		private authService: AuthService,
 		private usersService: UsersService,
 	) {}
-
-	@Mutation(() => SessionResponse)
-	@UseGuards(IsValidUser, LogInUser)
-	async login(@Context('req') request) {
-		const { user } = request;
-
-		return { isAuthenticated: true, user };
-	}
 
 	@Mutation(() => SessionResponse)
 	async signUp(
@@ -33,7 +26,7 @@ export class AuthResolver {
 				...data,
 			});
 
-			const loggedInUser = await this.authService.login({
+			const loggedInUser = await this.authService.signIn({
 				...request,
 				user: { ...newUser },
 			});
@@ -44,26 +37,38 @@ export class AuthResolver {
 		}
 	}
 
+	@Mutation(() => LogOutResponse)
+	signOut(
+		@Context('res') response,
+		@Context('req') request,
+		@Args('userId') userId: number,
+	) {
+		try {
+			this.authService.signOut({ request, response, userId });
+
+			return { isAuthenticated: false, userId };
+		} catch (error) {
+			generateGraphQLError(error);
+		}
+	}
+
+	@Mutation(() => SessionResponse)
+	@UseGuards(IsValidUser, SignInUser)
+	async signIn(
+		@Context('req') request,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		@Args('sessionInput') _sessionInput: SessionInput,
+	) {
+		const { user } = request;
+
+		return { isAuthenticated: true, user };
+	}
+
 	@Query(() => SessionResponse)
 	@UseGuards(IsAuthenticated)
 	async currentUser(@Context('req') request) {
 		const { user } = request;
 
 		return { isAuthenticated: true, user };
-	}
-
-	@Mutation(() => LogOutResponse)
-	logOut(
-		@Context('res') response,
-		@Context('req') request,
-		@Args('userId') userId: number,
-	) {
-		try {
-			this.authService.logOut({ request, response, userId });
-
-			return { isAuthenticated: false, userId };
-		} catch (error) {
-			generateGraphQLError(error);
-		}
 	}
 }

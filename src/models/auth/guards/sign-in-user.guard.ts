@@ -4,7 +4,7 @@ import { UnauthorizedException } from '@nestjs/common';
 import { CanActivate, Injectable, ExecutionContext } from '@nestjs/common';
 
 @Injectable()
-export class LogInUser implements CanActivate {
+export class SignInUser implements CanActivate {
 	constructor(private authService: AuthService) {}
 
 	async canActivate(executionContext: ExecutionContext) {
@@ -13,7 +13,7 @@ export class LogInUser implements CanActivate {
 			const context = ctx.getContext();
 			const { req: request } = context;
 
-			const user = await this.authService.login(request);
+			const user = await this.authService.signIn(request);
 
 			if (!user) {
 				throw new UnauthorizedException();

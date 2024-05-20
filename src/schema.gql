@@ -44,8 +44,8 @@ type LogOutResponse {
 type Mutation {
   createUser(data: UserCreateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
-  logOut(userId: Float!): LogOutResponse!
-  login: SessionResponse!
+  signIn(sessionInput: SessionInput!): SessionResponse!
+  signOut(userId: Float!): LogOutResponse!
   signUp(data: UserCreateInput!): SessionResponse!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
 }
@@ -102,6 +102,11 @@ type Query {
 enum QueryMode {
   default
   insensitive
+}
+
+input SessionInput {
+  email: String!
+  password: String!
 }
 
 type SessionResponse {

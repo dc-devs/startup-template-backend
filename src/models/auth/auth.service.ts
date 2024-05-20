@@ -7,7 +7,7 @@ import { User } from '../common/@generated/user/user.model';
 import { UserSafe } from '../users/common/entities/user-safe';
 import { Cookie } from '../../base/session-store/common/enums';
 
-interface ILoginRequest {
+interface ISignInRequest {
 	user?: User;
 	session?: any;
 	sessionStore?: any;
@@ -19,7 +19,7 @@ interface ILoginResponse {
 
 interface ILogOutProps {
 	userId: number;
-	request: ILoginRequest;
+	request: ISignInRequest;
 	response: ILoginResponse;
 }
 
@@ -48,7 +48,7 @@ export class AuthService {
 		}
 	}
 
-	async login(request: ILoginRequest) {
+	async signIn(request: ISignInRequest) {
 		const { user } = request;
 
 		if (user && request.session) {
@@ -60,14 +60,15 @@ export class AuthService {
 		return user;
 	}
 
-	logOut({ request, response, userId }: ILogOutProps) {
+	signOut({ request, response, userId }: ILogOutProps) {
 		request.session.userId = undefined;
 
 		response.cookie(Cookie.Name, null, {
-			httpOnly: true,
 			secure: true,
-			sameSite: 'none',
+			httpOnly: true,
+			domain: Cookie.Domain,
 			expires: new Date(Cookie.ExpireDate),
+			sameSite: 'none',
 		});
 
 		request.session.destroy();
