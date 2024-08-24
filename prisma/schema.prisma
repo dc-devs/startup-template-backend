@@ -42,3 +42,42 @@ model User {
 
 	@@index([id, email])
 }
+
+model Kol {
+	id						Int					@default(autoincrement()) @id
+	twitterHandle			String				@unique
+	telegramHandle			String				@unique
+	twitterProfile 			TwitterProfile?
+
+	createdAt				DateTime			@default(now())
+	updatedAt				DateTime			@updatedAt
+	
+	@@index([id])
+}
+
+model TwitterProfile {
+	id						Int				@default(autoincrement()) @id
+	profileId				String
+	name 					String
+	username 				String
+	location 				String
+	description 			String
+	imageUrl 				String
+	profileCreatedAt 		String
+	pinnedTweetId 			String
+	isProtected 			Boolean
+	isVerified 				Boolean
+	followersCount 			Int
+	followingCount 			Int
+	tweetCount 				Int
+	listedCount 			Int
+	likeCount 				Int
+	urls					Json
+	kol						Kol 			@relation(fields: [kolId], references: [id])
+	kolId					Int				@unique // relation scalar field (used in the `@relation` attribute above)
+
+	createdAt				DateTime		@default(now())
+	updatedAt				DateTime		@updatedAt
+
+	@@index([id,kolId])
+}

@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -36,18 +41,165 @@ input IntFilter {
   notIn: [Int!]
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+input JsonFilter {
+  array_contains: JSON
+  array_ends_with: JSON
+  array_starts_with: JSON
+  equals: JSON
+  gt: JSON
+  gte: JSON
+  lt: JSON
+  lte: JSON
+  not: JSON
+  path: [String!]
+  string_contains: String
+  string_ends_with: String
+  string_starts_with: String
+}
+
+type Kol {
+  createdAt: DateTime!
+  id: ID!
+  telegramHandle: String!
+  twitterHandle: String!
+  twitterProfile: TwitterProfile
+  updatedAt: DateTime!
+}
+
+input KolCreateInput {
+  createdAt: DateTime
+  telegramHandle: String!
+  twitterHandle: String!
+  twitterProfile: TwitterProfileCreateNestedOneWithoutKolInput
+  updatedAt: DateTime
+}
+
+input KolCreateNestedOneWithoutTwitterProfileInput {
+  connect: KolWhereUniqueInput
+  connectOrCreate: KolCreateOrConnectWithoutTwitterProfileInput
+  create: KolCreateWithoutTwitterProfileInput
+}
+
+input KolCreateOrConnectWithoutTwitterProfileInput {
+  create: KolCreateWithoutTwitterProfileInput!
+  where: KolWhereUniqueInput!
+}
+
+input KolCreateWithoutTwitterProfileInput {
+  createdAt: DateTime
+  telegramHandle: String!
+  twitterHandle: String!
+  updatedAt: DateTime
+}
+
+input KolOrderByWithRelationInput {
+  createdAt: SortOrder
+  id: SortOrder
+  telegramHandle: SortOrder
+  twitterHandle: SortOrder
+  twitterProfile: TwitterProfileOrderByWithRelationInput
+  updatedAt: SortOrder
+}
+
+input KolRelationFilter {
+  is: KolWhereInput
+  isNot: KolWhereInput
+}
+
+enum KolScalarFieldEnum {
+  createdAt
+  id
+  telegramHandle
+  twitterHandle
+  updatedAt
+}
+
+input KolUpdateInput {
+  createdAt: DateTime
+  telegramHandle: String
+  twitterHandle: String
+  twitterProfile: TwitterProfileUpdateOneWithoutKolNestedInput
+  updatedAt: DateTime
+}
+
+input KolUpdateOneRequiredWithoutTwitterProfileNestedInput {
+  connect: KolWhereUniqueInput
+  connectOrCreate: KolCreateOrConnectWithoutTwitterProfileInput
+  create: KolCreateWithoutTwitterProfileInput
+  update: KolUpdateToOneWithWhereWithoutTwitterProfileInput
+  upsert: KolUpsertWithoutTwitterProfileInput
+}
+
+input KolUpdateToOneWithWhereWithoutTwitterProfileInput {
+  data: KolUpdateWithoutTwitterProfileInput!
+  where: KolWhereInput
+}
+
+input KolUpdateWithoutTwitterProfileInput {
+  createdAt: DateTime
+  telegramHandle: String
+  twitterHandle: String
+  updatedAt: DateTime
+}
+
+input KolUpsertWithoutTwitterProfileInput {
+  create: KolCreateWithoutTwitterProfileInput!
+  update: KolUpdateWithoutTwitterProfileInput!
+  where: KolWhereInput
+}
+
+input KolWhereInput {
+  AND: [KolWhereInput!]
+  NOT: [KolWhereInput!]
+  OR: [KolWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  telegramHandle: StringFilter
+  twitterHandle: StringFilter
+  twitterProfile: TwitterProfileNullableRelationFilter
+  updatedAt: DateTimeFilter
+}
+
+input KolWhereUniqueInput {
+  AND: [KolWhereInput!]
+  NOT: [KolWhereInput!]
+  OR: [KolWhereInput!]
+  createdAt: DateTimeFilter
+  id: Int
+  telegramHandle: String
+  twitterHandle: String
+  twitterProfile: TwitterProfileNullableRelationFilter
+  updatedAt: DateTimeFilter
+}
+
 type LogOutResponse {
   isAuthenticated: Boolean!
   userId: Float!
 }
 
 type Mutation {
+  createKol(data: KolCreateInput!): Kol!
+  createTwitterProfile(data: TwitterProfileCreateInput!): TwitterProfile!
   createUser(data: UserCreateInput!): User!
+  deleteKol(where: KolWhereUniqueInput!): Kol!
+  deleteTwitterProfile(where: TwitterProfileWhereUniqueInput!): TwitterProfile!
   deleteUser(where: UserWhereUniqueInput!): User!
   signIn(sessionInput: SessionInput!): SessionResponse!
   signOut(userId: Float!): LogOutResponse!
   signUp(data: UserCreateInput!): SessionResponse!
+  updateKol(data: KolUpdateInput!, where: KolWhereUniqueInput!): Kol!
+  updateTwitterProfile(data: TwitterProfileUpdateInput!, where: TwitterProfileWhereUniqueInput!): TwitterProfile!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 input NestedDateTimeFilter {
@@ -95,7 +247,11 @@ input NestedStringFilter {
 
 type Query {
   currentUser: SessionResponse!
+  findAllKols(cursor: KolWhereUniqueInput, distinct: [KolScalarFieldEnum!], orderBy: [KolOrderByWithRelationInput!], skip: Int, take: Int, where: KolWhereInput): [Kol!]!
+  findAllTwitterProfiles(cursor: TwitterProfileWhereUniqueInput, distinct: [TwitterProfileScalarFieldEnum!], orderBy: [TwitterProfileOrderByWithRelationInput!], skip: Int, take: Int, where: TwitterProfileWhereInput): [TwitterProfile!]!
   findAllUsers(cursor: UserWhereUniqueInput, distinct: [UserScalarFieldEnum!], orderBy: [UserOrderByWithRelationInput!], skip: Int, take: Int, where: UserWhereInput): [User!]!
+  findOneKol(where: KolWhereUniqueInput!): Kol
+  findOneTwitterProfile(where: TwitterProfileWhereUniqueInput!): TwitterProfile
   findOneUser(where: UserWhereUniqueInput!): User
 }
 
@@ -132,6 +288,254 @@ input StringFilter {
   not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+type TwitterProfile {
+  createdAt: DateTime!
+  description: String!
+  followersCount: Int!
+  followingCount: Int!
+  id: ID!
+  imageUrl: String!
+  isProtected: Boolean!
+  isVerified: Boolean!
+  kol: Kol!
+  kolId: Int!
+  likeCount: Int!
+  listedCount: Int!
+  location: String!
+  name: String!
+  pinnedTweetId: String!
+  profileCreatedAt: String!
+  profileId: String!
+  tweetCount: Int!
+  updatedAt: DateTime!
+  urls: JSON!
+  username: String!
+}
+
+input TwitterProfileCreateInput {
+  createdAt: DateTime
+  description: String!
+  followersCount: Int!
+  followingCount: Int!
+  imageUrl: String!
+  isProtected: Boolean!
+  isVerified: Boolean!
+  kol: KolCreateNestedOneWithoutTwitterProfileInput!
+  likeCount: Int!
+  listedCount: Int!
+  location: String!
+  name: String!
+  pinnedTweetId: String!
+  profileCreatedAt: String!
+  profileId: String!
+  tweetCount: Int!
+  updatedAt: DateTime
+  urls: JSON!
+  username: String!
+}
+
+input TwitterProfileCreateNestedOneWithoutKolInput {
+  connect: TwitterProfileWhereUniqueInput
+  connectOrCreate: TwitterProfileCreateOrConnectWithoutKolInput
+  create: TwitterProfileCreateWithoutKolInput
+}
+
+input TwitterProfileCreateOrConnectWithoutKolInput {
+  create: TwitterProfileCreateWithoutKolInput!
+  where: TwitterProfileWhereUniqueInput!
+}
+
+input TwitterProfileCreateWithoutKolInput {
+  createdAt: DateTime
+  description: String!
+  followersCount: Int!
+  followingCount: Int!
+  imageUrl: String!
+  isProtected: Boolean!
+  isVerified: Boolean!
+  likeCount: Int!
+  listedCount: Int!
+  location: String!
+  name: String!
+  pinnedTweetId: String!
+  profileCreatedAt: String!
+  profileId: String!
+  tweetCount: Int!
+  updatedAt: DateTime
+  urls: JSON!
+  username: String!
+}
+
+input TwitterProfileNullableRelationFilter {
+  is: TwitterProfileWhereInput
+  isNot: TwitterProfileWhereInput
+}
+
+input TwitterProfileOrderByWithRelationInput {
+  createdAt: SortOrder
+  description: SortOrder
+  followersCount: SortOrder
+  followingCount: SortOrder
+  id: SortOrder
+  imageUrl: SortOrder
+  isProtected: SortOrder
+  isVerified: SortOrder
+  kol: KolOrderByWithRelationInput
+  kolId: SortOrder
+  likeCount: SortOrder
+  listedCount: SortOrder
+  location: SortOrder
+  name: SortOrder
+  pinnedTweetId: SortOrder
+  profileCreatedAt: SortOrder
+  profileId: SortOrder
+  tweetCount: SortOrder
+  updatedAt: SortOrder
+  urls: SortOrder
+  username: SortOrder
+}
+
+enum TwitterProfileScalarFieldEnum {
+  createdAt
+  description
+  followersCount
+  followingCount
+  id
+  imageUrl
+  isProtected
+  isVerified
+  kolId
+  likeCount
+  listedCount
+  location
+  name
+  pinnedTweetId
+  profileCreatedAt
+  profileId
+  tweetCount
+  updatedAt
+  urls
+  username
+}
+
+input TwitterProfileUpdateInput {
+  createdAt: DateTime
+  description: String
+  followersCount: Int
+  followingCount: Int
+  imageUrl: String
+  isProtected: Boolean
+  isVerified: Boolean
+  kol: KolUpdateOneRequiredWithoutTwitterProfileNestedInput
+  likeCount: Int
+  listedCount: Int
+  location: String
+  name: String
+  pinnedTweetId: String
+  profileCreatedAt: String
+  profileId: String
+  tweetCount: Int
+  updatedAt: DateTime
+  urls: JSON
+  username: String
+}
+
+input TwitterProfileUpdateOneWithoutKolNestedInput {
+  connect: TwitterProfileWhereUniqueInput
+  connectOrCreate: TwitterProfileCreateOrConnectWithoutKolInput
+  create: TwitterProfileCreateWithoutKolInput
+  delete: TwitterProfileWhereInput
+  disconnect: TwitterProfileWhereInput
+  update: TwitterProfileUpdateToOneWithWhereWithoutKolInput
+  upsert: TwitterProfileUpsertWithoutKolInput
+}
+
+input TwitterProfileUpdateToOneWithWhereWithoutKolInput {
+  data: TwitterProfileUpdateWithoutKolInput!
+  where: TwitterProfileWhereInput
+}
+
+input TwitterProfileUpdateWithoutKolInput {
+  createdAt: DateTime
+  description: String
+  followersCount: Int
+  followingCount: Int
+  imageUrl: String
+  isProtected: Boolean
+  isVerified: Boolean
+  likeCount: Int
+  listedCount: Int
+  location: String
+  name: String
+  pinnedTweetId: String
+  profileCreatedAt: String
+  profileId: String
+  tweetCount: Int
+  updatedAt: DateTime
+  urls: JSON
+  username: String
+}
+
+input TwitterProfileUpsertWithoutKolInput {
+  create: TwitterProfileCreateWithoutKolInput!
+  update: TwitterProfileUpdateWithoutKolInput!
+  where: TwitterProfileWhereInput
+}
+
+input TwitterProfileWhereInput {
+  AND: [TwitterProfileWhereInput!]
+  NOT: [TwitterProfileWhereInput!]
+  OR: [TwitterProfileWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringFilter
+  followersCount: IntFilter
+  followingCount: IntFilter
+  id: IntFilter
+  imageUrl: StringFilter
+  isProtected: BoolFilter
+  isVerified: BoolFilter
+  kol: KolRelationFilter
+  kolId: IntFilter
+  likeCount: IntFilter
+  listedCount: IntFilter
+  location: StringFilter
+  name: StringFilter
+  pinnedTweetId: StringFilter
+  profileCreatedAt: StringFilter
+  profileId: StringFilter
+  tweetCount: IntFilter
+  updatedAt: DateTimeFilter
+  urls: JsonFilter
+  username: StringFilter
+}
+
+input TwitterProfileWhereUniqueInput {
+  AND: [TwitterProfileWhereInput!]
+  NOT: [TwitterProfileWhereInput!]
+  OR: [TwitterProfileWhereInput!]
+  createdAt: DateTimeFilter
+  description: StringFilter
+  followersCount: IntFilter
+  followingCount: IntFilter
+  id: Int
+  imageUrl: StringFilter
+  isProtected: BoolFilter
+  isVerified: BoolFilter
+  kol: KolRelationFilter
+  kolId: Int
+  likeCount: IntFilter
+  listedCount: IntFilter
+  location: StringFilter
+  name: StringFilter
+  pinnedTweetId: StringFilter
+  profileCreatedAt: StringFilter
+  profileId: StringFilter
+  tweetCount: IntFilter
+  updatedAt: DateTimeFilter
+  urls: JsonFilter
+  username: StringFilter
 }
 
 type User {

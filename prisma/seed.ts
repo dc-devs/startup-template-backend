@@ -1,12 +1,19 @@
 import { PrismaClient } from '@prisma/client';
-import { users } from './seeds';
+import { users, kols, twitterProfiles } from './seeds';
 
 const prisma = new PrismaClient();
 
 const main = async () => {
-	console.log(users);
 	await prisma.user.createMany({
 		data: [...users],
+	});
+
+	await prisma.kol.createMany({
+		data: [...kols],
+	});
+
+	await prisma.twitterProfile.createMany({
+		data: [...twitterProfiles],
 	});
 };
 

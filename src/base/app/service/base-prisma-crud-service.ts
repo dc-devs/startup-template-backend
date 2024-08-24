@@ -38,7 +38,10 @@ export class BasePrismaCrudService<
 	}
 
 	findAll(findManyArgs: FindManyArgs): Promise<Entity[]> {
-		return this.prisma?.[this.modelName].findMany(findManyArgs);
+		return this.prisma?.[this.modelName].findMany({
+			...findManyArgs,
+			select: this.select,
+		});
 	}
 
 	create(data: CreateOneInput): Promise<Entity> {
